@@ -1,0 +1,19 @@
+{
+  "extends": "solhint:recommended",
+  "rules": {
+    "compiler-version": ["error", "^0.8.17"],
+    "func-visibility": ["warn", { "ignoreConstructors": true }],
+    "ordering": "warn",
+    "state-visibility": "error",
+    "no-global-import": "off",
+    "const-name-snakecase": "error",
+    "contract-name-camelcase": "error",
+    "event-name-camelcase": "error",
+    "func-name-mixedcase": "error",
+    "func-param-name-mixedcase": "error",
+    "modifier-name-mixedcase": "error",
+    "private-vars-leading-underscore": "error",
+    "var-name-mixedcase": "warn",
+    "imports-on-top": "error"
+  }
+}
