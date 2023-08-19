@@ -22,9 +22,9 @@
     "graph-codegen": "hardhat export-abi && graph codegen",
     "graph-build": "graph build",
     "graph-deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ <Graph Name>",
-    "graph-create-local": "graph create --node http://167.172.80.21:8020 <Graph Name>",
-    "graph-remove-local": "graph remove --node http://167.172.80.21:8020 <Graph Name>",
-    "graph-deploy-local": "graph deploy --node http://167.172.80.21:8020 --ipfs http://167.172.80.21:5001 <Graph Name>",
+    "graph-create-local": "graph create --node <node> <Graph Name>",
+    "graph-remove-local": "graph remove --node <node> <Graph Name>",
+    "graph-deploy-local": "graph deploy --node <node> --ipfs <ipfs> <Graph Name>",
     "graph-test": "graph test"
   },
   "repository": {
