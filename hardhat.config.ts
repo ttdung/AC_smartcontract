@@ -13,9 +13,6 @@ import "hardhat-finder";
 import "@dlsl/hardhat-gobind";
 
 import "./tasks/accounts";
-import "./tasks/decode-data";
-import "./tasks/grant-reward";
-import "./tasks/redeem";
 
 dotenv.config();
 
@@ -87,7 +84,7 @@ const config: HardhatUserConfig = {
     deployable: false,
     runOnCompile: false,
     verbose: false,
-    onlyFiles: ["contracts/reward-creator/Fund.sol"],
+    onlyFiles: ["contracts/<contract.sol>"],
   },
   mocha: {
     timeout: 30000,
@@ -103,10 +100,8 @@ const config: HardhatUserConfig = {
         network: "astraTestnet",
         chainId: 11115,
         urls: {
-          apiURL: "https://chainindexing.astranaut.dev/api",
-          browserURL: "https://blockscout.astranaut.dev",
-          // apiURL: "https://blockscout.astranaut.dev/api",
-          // browserURL: "https://blockscout.astranaut.dev",
+          apiURL: process.env.EXPLORER_API_DEV || "",
+          browserURL: process.env.EXPLORER_URL_DEV || "",
         },
       },
       {

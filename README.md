@@ -1,6 +1,4 @@
-# Astra Contracts
-
-This project create contracts for loyalty system in Astra Network.
+# Contracts
 
 ## Develop Guide
 
@@ -36,7 +34,7 @@ yarn compile
 yarn test
 ```
 
-### Deploy to Astra network
+### Deploy to network
 
 ```sh
 yarn deploy
