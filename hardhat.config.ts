@@ -42,7 +42,7 @@ const config: HardhatUserConfig = {
       },
     ],
   },
-  defaultNetwork: "astraTestnet",
+  defaultNetwork: "devnet",
   networks: {
     hardhat: {
       gas: 20000000,
@@ -50,21 +50,21 @@ const config: HardhatUserConfig = {
     },
     goerli: {
       url: process.env.GOERLI_URL || "",
-      accounts: [process.env.PRIVATE_KEY ? process.env.PRIVATE_KEY : ""],
+      accounts: [process.env.PRIVATE_KEY_DEV ? process.env.PRIVATE_KEY_DEV : ""],
       timeout: 8000000,
       gasPrice: 20000000000, // 50 Gwei
     },
-    astra: {
-      url: process.env.ASTRA_URL_PROD || "",
+    prodnet: {
+      url: process.env.RPC_URL_PROD || "",
       accounts: [
         process.env.PRIVATE_KEY_PROD ? process.env.PRIVATE_KEY_PROD : "",
       ],
       timeout: 8000000,
       gasPrice: 2000000000000, // 20 Gwei
     },
-    astraTestnet: {
-      url: process.env.ASTRA_URL || "",
-      accounts: [process.env.PRIVATE_KEY ? process.env.PRIVATE_KEY : ""],
+    devnet: {
+      url: process.env.RPC_URL_DEV || "",
+      accounts: [process.env.PRIVATE_KEY_DEV ? process.env.PRIVATE_KEY_DEV : ""],
       timeout: 8000000,
       gasPrice: 2000000000000, // 20 Gwei
     },
@@ -92,12 +92,12 @@ const config: HardhatUserConfig = {
   etherscan: {
     apiKey: {
       goerli: process.env.ETHERSCAN_API_KEY || "",
-      astraTestnet: "abc",
-      astra: "abc",
+      devnet: "abc",
+      prodnet: "abc",
     },
     customChains: [
       {
-        network: "astraTestnet",
+        network: "devnet",
         chainId: 11115,
         urls: {
           apiURL: process.env.EXPLORER_API_DEV || "",
@@ -105,7 +105,7 @@ const config: HardhatUserConfig = {
         },
       },
       {
-        network: "astra",
+        network: "prodnet",
         chainId: 11110,
         urls: {
           apiURL: process.env.EXPLORER_API_PROD || "",
