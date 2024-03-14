@@ -23,7 +23,7 @@ const config: HardhatUserConfig = {
   solidity: {
     compilers: [
       {
-        version: "0.8.20",
+        version: "0.8.19",
         settings: {
           optimizer: { enabled: true, runs: 200 },
           outputSelection: {
@@ -50,21 +50,17 @@ const config: HardhatUserConfig = {
     },
     goerli: {
       url: process.env.GOERLI_URL || "",
-      accounts: [process.env.PRIVATE_KEY_DEV ? process.env.PRIVATE_KEY_DEV : ""],
+      accounts: [
+        process.env.PRIVATE_KEY_DEV ? process.env.PRIVATE_KEY_DEV : "",
+      ],
       timeout: 8000000,
       gasPrice: 20000000000, // 50 Gwei
     },
-    prodnet: {
-      url: process.env.RPC_URL_PROD || "",
-      accounts: [
-        process.env.PRIVATE_KEY_PROD ? process.env.PRIVATE_KEY_PROD : "",
-      ],
-      timeout: 8000000,
-      gasPrice: 2000000000000, // 20 Gwei
-    },
     devnet: {
       url: process.env.RPC_URL_DEV || "",
-      accounts: [process.env.PRIVATE_KEY_DEV ? process.env.PRIVATE_KEY_DEV : ""],
+      accounts: [
+        process.env.PRIVATE_KEY_DEV ? process.env.PRIVATE_KEY_DEV : "",
+      ],
       timeout: 8000000,
       gasPrice: 2000000000000, // 20 Gwei
     },
@@ -95,24 +91,6 @@ const config: HardhatUserConfig = {
       devnet: "abc",
       prodnet: "abc",
     },
-    customChains: [
-      {
-        network: "devnet",
-        chainId: 11115,
-        urls: {
-          apiURL: process.env.EXPLORER_API_DEV || "",
-          browserURL: process.env.EXPLORER_URL_DEV || "",
-        },
-      },
-      {
-        network: "prodnet",
-        chainId: 11110,
-        urls: {
-          apiURL: process.env.EXPLORER_API_PROD || "",
-          browserURL: process.env.EXPLORER_URL_PROD || "",
-        },
-      },
-    ],
   },
 };
 
