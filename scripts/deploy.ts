@@ -1,13 +1,19 @@
 import { ethers } from "hardhat";
 
 async function main() {
+  const [deployer] = await ethers.getSigners();
+  console.log('deployer address', deployer.address)
+
+  const deployerBalance = await ethers.provider.getBalance(deployer.address);
+  console.log('deployerBalance', deployerBalance);
+
   const FileAccessControlFactory = await ethers.getContractFactory(
     "FileAccessControl"
   );
   const fileAc = await FileAccessControlFactory.deploy();
   const receipt = await fileAc.deployed();
   console.log(
-    `FileAccessControl is deploy at ${fileAc.address}. Tx ${receipt.deployTransaction.hash}`
+    `FileAccessControl is deploy at ${fileAc.address} \nTxHash ${receipt.deployTransaction.hash}`
   );
 }
 

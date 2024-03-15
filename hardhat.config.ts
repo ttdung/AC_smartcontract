@@ -10,7 +10,7 @@ import "solidity-coverage";
 import "hardhat-abi-exporter";
 import "hardhat-contract-sizer";
 import "hardhat-finder";
-import "@dlsl/hardhat-gobind";
+// import "@dlsl/hardhat-gobind";
 
 import "./tasks/accounts";
 
@@ -18,6 +18,12 @@ dotenv.config();
 
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
+
+const deployerKey = process.env.PRIVATE_KEY_DEV || "";
+const dev0Key = process.env.PRIVATE_KEY_DEV0 || '';
+const dev1Key = process.env.PRIVATE_KEY_DEV1 || '';
+const dev2Key = process.env.PRIVATE_KEY_DEV2 || '';
+const devNetAccounts = [deployerKey, dev0Key, dev1Key, dev2Key];
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -58,9 +64,7 @@ const config: HardhatUserConfig = {
     },
     devnet: {
       url: process.env.RPC_URL_DEV || "",
-      accounts: [
-        process.env.PRIVATE_KEY_DEV ? process.env.PRIVATE_KEY_DEV : "",
-      ],
+      accounts: devNetAccounts,
       timeout: 8000000,
       gasPrice: 2000000000000, // 20 Gwei
     },
@@ -75,13 +79,13 @@ const config: HardhatUserConfig = {
     flat: true,
     spacing: 2,
   },
-  gobind: {
-    outdir: "./go-types/contract",
-    deployable: false,
-    runOnCompile: false,
-    verbose: false,
-    onlyFiles: ["contracts/<contract.sol>"],
-  },
+  // gobind: {
+  //   outdir: "./go-types/contract",
+  //   deployable: false,
+  //   runOnCompile: false,
+  //   verbose: false,
+  //   onlyFiles: ["contracts/<contract.sol>"],
+  // },
   mocha: {
     timeout: 30000,
   },

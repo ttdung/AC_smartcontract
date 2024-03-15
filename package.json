@@ -15,7 +15,11 @@
     "lint:fix": "prettier --write 'contracts/**/*.sol'",
     "slither": "npm run clean && slither .",
     "gen-go": "hardhat export-abi && ./gen-go-package.sh",
-    "deploy": "hardhat run scripts/deploy.ts",
+    "deploy": "hardhat run scripts/deploy.ts --network devnet",
+    "setDataOwner": "hardhat run scripts/setDataOwner.ts --network devnet",
+    "addFile": "hardhat run scripts/addFile.ts --network devnet",
+    "updateFile": "hardhat run scripts/updateFile.ts --network devnet",
+    "listener": "hardhat run scripts/listener.ts --network devnet",
     "verify": "hardhat verify"
   },
   "repository": {
