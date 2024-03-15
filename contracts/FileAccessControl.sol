@@ -4,12 +4,12 @@ pragma solidity 0.8.19;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract FileAccessControl is Ownable {
-  struct File { 
-   address owner;
-   string name; // file url
-   string readRule;
-   address[] writers;
-   uint  threshold;
+  struct File {
+    address owner;
+    string name; // file url
+    string readRule;
+    address[] writers;
+    uint threshold;
   }
 
   struct Proposal {
@@ -22,7 +22,14 @@ contract FileAccessControl is Ownable {
   mapping(bytes32 => File) public files;
   mapping(bytes32 => Proposal) public writeProposal;
 
-  event AddFile(bytes32 indexed fileId, address owner, string name, string readRule, address[] writeList, uint threshold);
+  event AddFile(
+    bytes32 indexed fileId,
+    address owner,
+    string name,
+    string readRule,
+    address[] writeList,
+    uint threshold
+  );
   event UpdateFile(bytes32 indexed fileId, string oldname, string newname);
   event UpdateReadRule(bytes32 indexed newFileId, bytes32 indexed oldFileId, string readRule);
   event UpdateWriteList(bytes32 indexed newFileId, bytes32 indexed oldFileId, address[] writeList);
@@ -36,8 +43,13 @@ contract FileAccessControl is Ownable {
     dataOwner[user] = isDataOwner;
   }
 
-  function addFile(bytes32 fileId, string calldata name, string calldata readRule, 
-                  address[] calldata writeList, uint threshold) external {
+  function addFile(
+    bytes32 fileId,
+    string calldata name,
+    string calldata readRule,
+    address[] calldata writeList,
+    uint threshold
+  ) external {
     // TODO: verify fileId existed or not
 
     require(dataOwner[msg.sender], "Only data owner");
@@ -61,33 +73,30 @@ contract FileAccessControl is Ownable {
   }
 
   function submitUpdateFileProposal(bytes32 fileId, string calldata oldname, string calldata newname) public {
+    require(isInList(msg.sender, files[fileId].writers) == true, "NO write permission");
 
-    require (isInList(msg.sender, files[fileId].writers) == true, "NO write permission");
-    
-      if (isInList(msg.sender, writeProposal[fileId].proposer) == false) {
-        writeProposal[fileId].proposer.push(msg.sender);
-        writeProposal[fileId].oldname = oldname;
-        writeProposal[fileId].newname = newname;
-      }
-    
+    if (isInList(msg.sender, writeProposal[fileId].proposer) == false) {
+      writeProposal[fileId].proposer.push(msg.sender);
+      writeProposal[fileId].oldname = oldname;
+      writeProposal[fileId].newname = newname;
+    }
   }
 
-function approveProposal(bytes32 fileId) public{
-   if ( isInList(msg.sender, files[fileId].writers) == true) {
+  function approveProposal(bytes32 fileId) public {
+    if (isInList(msg.sender, files[fileId].writers) == true) {
       if (isInList(msg.sender, writeProposal[fileId].proposer) == false) {
         writeProposal[fileId].proposer.push(msg.sender);
-        
+
         if (writeProposal[fileId].proposer.length >= files[fileId].threshold) {
           // execute updated
           files[fileId].name = writeProposal[fileId].newname;
-          
+
           emit UpdateFile(fileId, writeProposal[fileId].oldname, writeProposal[fileId].newname);
         }
       }
-   } 
-}
+    }
+  }
 
- 
   // function updateFile(bytes32 newFileId, bytes32 oldFileId) external onlyDataOwner(oldFileId) {
   //   fileOwners[newFileId] = msg.sender;
   //   readFileRule[newFileId] = readFileRule[oldFileId];
@@ -124,12 +133,9 @@ function approveProposal(bytes32 fileId) public{
   //   emit UpdateWriteList(newFileId, oldFileId, writeList);
   // }
 
-
   function _setWriteList(bytes32 fileId, address[] memory writeList) private {
     for (uint256 i = 0; i < writeList.length; i++) {
       files[fileId].writers.push(writeList[i]);
     }
   }
 }
-
-
