@@ -13,20 +13,25 @@ async function main() {
   );
   const fileAc = FileAccessControlFactory.attach(CONTRACT_ADDRESS);
   
-  const fileId = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("hash.txt"));
+  const oldname = "aaa1.txt";
+  const fileId = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(oldname));
  // const fileId = "0x74405ea03568a5286c93fdaf15fd483b3dbd704f04cdac36cf04fe389266ad30"
  console.log('fileId', fileId);
 
-  const oldname = "hello.txt";
-  const newname = "hello world.txt";
-  
+  const newname = "hello.txt";
+
+  const text = oldname+newname;
+  console.log("text ",text)
+  const proposalId = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(oldname+newname));
+  console.log("proposalId: ", proposalId)
+
   // User Dev1: submit proposal to update "abc.txt" => "xyz.txt"
-  const submitProposal = await fileAc.connect(dev1).submitUpdateFileProposal(fileId, oldname, newname);
+  const submitProposal = await fileAc.connect(dev1).submitUpdateFileProposal(proposalId, fileId, oldname, newname);
   const submitProposalTxReceipt =  await submitProposal.wait();
   console.log('uploadFileTxReceipt', Boolean(submitProposalTxReceipt.status), submitProposalTxReceipt.transactionHash);
 
   // User Dev2: approve proposal to update "abc.txt" => "xyz.txt"
-  const approveProposal = await fileAc.connect(dev2).approveProposal(fileId);
+  const approveProposal = await fileAc.connect(dev2).approveProposal(proposalId);
   const approveProposalTxReceipt =  await approveProposal.wait();
   console.log('uploadFileTxReceipt', Boolean(approveProposalTxReceipt.status), approveProposalTxReceipt.transactionHash);
 

@@ -5,6 +5,8 @@ dotenv.config();
 import { CONTRACT_ADDRESS } from "./common";
 
 async function main() {
+  const [acct, symbol] = args;
+  console.log(acct, symbol)
   const [deployer, dev0, dev1, dev2] = await ethers.getSigners();
   console.log('deployer address', deployer.address);
  
@@ -13,11 +15,12 @@ async function main() {
   );
   const fileAc = FileAccessControlFactory.attach(CONTRACT_ADDRESS);
   
-  const fileId = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("hash.txt"));
+  const filename ="/tmp/demo0/encryptedKey.txt";
+  const fileId = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(filename));
   console.log('fileId', fileId);
-  const readRule = "student AND (math or CS)";
+  
+  const readRule = "student and (math or CS)";
   const writerList = [dev1.address, dev2.address];
-  const filename = "hello.txt";
   const threshold = 2;
 
   // addFile(bytes32 fileId, string calldata name, string calldata readRule, 
