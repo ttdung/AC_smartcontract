@@ -13,7 +13,7 @@ async function main() {
   );
   const fileAc = FileAccessControlFactory.attach(CONTRACT_ADDRESS);
   
-  const oldname = "aaa1.txt";
+  const oldname = "/tmp/demo0/encryptedKey.txt";
   const fileId = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(oldname));
  // const fileId = "0x74405ea03568a5286c93fdaf15fd483b3dbd704f04cdac36cf04fe389266ad30"
  console.log('fileId', fileId);
@@ -31,9 +31,9 @@ async function main() {
   console.log('uploadFileTxReceipt', Boolean(submitProposalTxReceipt.status), submitProposalTxReceipt.transactionHash);
 
   // User Dev2: approve proposal to update "abc.txt" => "xyz.txt"
-  const approveProposal = await fileAc.connect(dev2).approveProposal(proposalId);
-  const approveProposalTxReceipt =  await approveProposal.wait();
-  console.log('uploadFileTxReceipt', Boolean(approveProposalTxReceipt.status), approveProposalTxReceipt.transactionHash);
+  // const approveProposal = await fileAc.connect(dev2).approveProposal(proposalId);
+  // const approveProposalTxReceipt =  await approveProposal.wait();
+  // console.log('uploadFileTxReceipt', Boolean(approveProposalTxReceipt.status), approveProposalTxReceipt.transactionHash);
 
 }
 

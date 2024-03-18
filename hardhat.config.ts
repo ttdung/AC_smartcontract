@@ -13,6 +13,7 @@ import "hardhat-finder";
 // import "@dlsl/hardhat-gobind";
 
 import "./tasks/accounts";
+import "./tasks/addfiles";
 
 dotenv.config();
 

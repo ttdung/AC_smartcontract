@@ -4,24 +4,27 @@ dotenv.config();
 
 import { CONTRACT_ADDRESS } from "./common";
 
+
+async function approveUpdate(proposalId, fileAc) {
+  const [deployer, dev0, dev1, dev2] = await ethers.getSigners();
+  const approveProposal = await fileAc.connect(dev2).approveProposal(proposalId);
+  const approveProposalTxReceipt =  await approveProposal.wait();
+  console.log('uploadFileTxReceipt', Boolean(approveProposalTxReceipt.status), approveProposalTxReceipt.transactionHash);
+} 
+
 async function main() {
   const [deployer, dev0, dev1, dev2] = await ethers.getSigners();
   // console.log('deployer address', deployer.address);
 
-  // const attr = "student|CS";
-  const attr = process.argv[3];
+  const attr = "student|CS";
+  const uid = "du";
   console.log('Attributes: ', attr);
-
-  const uid = process.argv[2]
-  console.log('uid: ', uid);
 
   const FileAccessControlFactory = await ethers.getContractFactory(
     "FileAccessControl"
   );
   const fileAc = FileAccessControlFactory.attach(CONTRACT_ADDRESS);
   
-//   event AddFile(bytes32 indexed fileId, address owner, string name, string readRule, address[] writeList, uint threshold);
-
   fileAc.on('AddFile', (fileId, owner, name, readRule, writeList, threshold, eventData) => {
     let addFileEvent ={
         fileId, owner, name, readRule, writeList, threshold //, eventData
@@ -30,7 +33,6 @@ async function main() {
     
     var request = require('request');
     
-    //"/tmp/demo0/encryptedKey.txt"
     const options = {
       url: 'http://127.0.0.1:8081/matchpolicy',
       json: true,
@@ -56,12 +58,31 @@ async function main() {
 
   });
 
-//   event UpdateFile(bytes32 indexed fileId, string oldname, string newname);
+//   event UpdateProposal(bytes32 indexed fileId, string oldname, string newname);
+  fileAc.on('UpdateProposal', (proposalId, fileId, oldname, newname, eventData) => {
+    let updateFileEvent ={
+        proposalId, fileId, oldname, newname, //, eventData
+    }
+    console.log("\nEvent Update Proposal:")
+    console.log(JSON.stringify(updateFileEvent, null, 4));
+
+    // TODO
+    // 1. Check if this node has write permission
+    // 2. check if proposal is valid
+
+    // User Dev2: approve proposal to update file
+    console.log("\nApproving proposal: ", proposalId)
+    approveUpdate(proposalId, fileAc);
+  });
+
+  //   event UpdateFile(bytes32 indexed fileId, string oldname, string newname);
   fileAc.on('UpdateFile', (proposalId, fileId, oldname, newname, eventData) => {
     let updateFileEvent ={
         fileId, oldname, newname, //, eventData
     }
+    console.log("\nEvent UpdateFile:")
     console.log(JSON.stringify(updateFileEvent, null, 4));
+
   });
 }
 

@@ -5,23 +5,23 @@ dotenv.config();
 import { CONTRACT_ADDRESS } from "./common";
 
 async function main() {
-  const [acct, symbol] = args;
-  console.log(acct, symbol)
+
   const [deployer, dev0, dev1, dev2] = await ethers.getSigners();
   console.log('deployer address', deployer.address);
- 
+
+  const filename ="/tmp/demo0/encryptedKey.txt";
+  const readRule = "student and (math or CS)";
+  const writerList = [dev1.address, dev2.address];
+  const threshold = 2;
+
   const FileAccessControlFactory = await ethers.getContractFactory(
     "FileAccessControl"
   );
   const fileAc = FileAccessControlFactory.attach(CONTRACT_ADDRESS);
   
-  const filename ="/tmp/demo0/encryptedKey.txt";
   const fileId = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(filename));
   console.log('fileId', fileId);
-  
-  const readRule = "student and (math or CS)";
-  const writerList = [dev1.address, dev2.address];
-  const threshold = 2;
+
 
   // addFile(bytes32 fileId, string calldata name, string calldata readRule, 
     // address[] calldata writeList, uint threshold)

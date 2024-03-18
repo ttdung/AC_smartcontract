@@ -32,6 +32,7 @@ contract FileAccessControl is Ownable {
     uint threshold
   );
   event UpdateFile(bytes32 indexed proposalId, bytes32 indexed fileId, string oldname, string newname);
+  event UpdateProposal(bytes32 indexed proposalId, bytes32 indexed fileId, string oldname, string newname);
   event UpdateReadRule(bytes32 indexed newFileId, bytes32 indexed oldFileId, string readRule);
   event UpdateWriteList(bytes32 indexed newFileId, bytes32 indexed oldFileId, address[] writeList);
 
@@ -98,6 +99,13 @@ contract FileAccessControl is Ownable {
       writeProposal[proposalId].fileId = fileId;
       writeProposal[proposalId].oldname = oldname;
       writeProposal[proposalId].newname = newname;
+
+      emit UpdateProposal(
+        proposalId,
+        writeProposal[proposalId].fileId,
+        writeProposal[proposalId].oldname,
+        writeProposal[proposalId].newname
+      );
     }
   }
 
